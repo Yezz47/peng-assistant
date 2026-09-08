@@ -44,16 +44,16 @@
     },
     {
       "id": "claim-peng-004",
-      "source_fact": "计划发布GitHub公开仓库与Vercel演示。",
-      "candidate_wording": "【待补：取得公开URL并完成公网验收后使用】",
-      "sources": [{"type": "delivery_plan", "location": "01_项目步骤记录.md", "public_status": "未发布"}],
+      "source_fact": "已发布GitHub公开仓库；Vercel公网演示待部署。",
+      "candidate_wording": "已公开交付可复现源码与产品材料；公网交互演示待部署后补充。",
+      "sources": [{"type": "public_repository", "location": "https://github.com/Yezz47/peng-assistant", "public_status": "已公开"}],
       "responsibility_level": "项目负责人",
-      "verification_status": "待确认",
-      "allowed_uses": ["内部审计稿"],
+      "verification_status": "已确认",
+      "allowed_uses": ["AI产品经理简历", "作品集", "面试"],
       "interview_details": ["可说明公开安全审计、环境变量与无数据库演示部署策略"],
-      "boundary": "当前只有本地地址，不能声称已上线。",
-      "risk_notes": ["商家授权或匿名化必须先处理"],
-      "last_verified": null
+      "boundary": "公开源码已完成；当前仍不能声称公网产品已上线。",
+      "risk_notes": ["Vercel URL与公网验收待补"],
+      "last_verified": "2026-09-08"
     }
   ]
 }
