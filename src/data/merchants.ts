@@ -1,0 +1,85 @@
+import type { Merchant } from "@/types/domain";
+
+export const MERCHANT_SEEDS: Merchant[] = [
+  {
+    id: "cqxm_xingguang_001",
+    name: "重庆小面",
+    branchName: "星光广场店",
+    category: "米粉面馆",
+    address: "无锡市滨湖区蠡湖大道与吴都路交叉口",
+    themeColor: "#C43D30",
+    status: "active",
+    source: "单商户MVP测试数据",
+    updatedAt: "2026-09-05T00:00:00.000Z",
+    reviewTargets: [],
+    dishes: [
+      {
+        id: "cqxm_pea_noodles",
+        merchantId: "cqxm_xingguang_001",
+        name: "重庆豌杂拌面",
+        isSignature: true,
+        status: "active",
+        sortOrder: 1,
+      },
+      {
+        id: "cqxm_hot_sour_noodles",
+        merchantId: "cqxm_xingguang_001",
+        name: "重庆酸辣粉",
+        isSignature: true,
+        status: "active",
+        sortOrder: 2,
+      },
+      {
+        id: "cqxm_classic_noodles",
+        merchantId: "cqxm_xingguang_001",
+        name: "重庆小面",
+        isSignature: true,
+        status: "active",
+        sortOrder: 3,
+      },
+    ],
+  },
+  {
+    id: "jnxz_huhehaote_001",
+    name: "江南禧樽-淮扬菜·扬州早茶",
+    category: "江浙菜",
+    address: "内蒙古自治区呼和浩特市赛罕区中南璞樾府",
+    themeColor: "#241B18",
+    status: "active",
+    source: "第二家商户MVP测试数据",
+    updatedAt: "2026-09-05T00:00:00.000Z",
+    reviewTargets: [
+      {
+        id: "dianping",
+        label: "前往大众点评",
+        url: "https://www.dianping.com/shop/HapCcHtXA7y7hin2",
+      },
+    ],
+    dishes: [
+      {
+        id: "jnxz_braised_pork",
+        merchantId: "jnxz_huhehaote_001",
+        name: "红烧肉",
+        isSignature: true,
+        status: "active",
+        sortOrder: 1,
+      },
+      {
+        id: "jnxz_boiled_shredded_tofu",
+        merchantId: "jnxz_huhehaote_001",
+        name: "大煮干丝",
+        isSignature: true,
+        status: "active",
+        sortOrder: 2,
+      },
+      {
+        id: "jnxz_ruandou",
+        merchantId: "jnxz_huhehaote_001",
+        name: "软兜",
+        isSignature: true,
+        status: "active",
+        sortOrder: 3,
+      },
+    ],
+  },
+];

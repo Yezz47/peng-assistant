@@ -1,0 +1,59 @@
+{
+  "project": "碰一碰评价表达助手",
+  "target_role": "AI产品经理",
+  "last_updated": "2026-09-08",
+  "claims": [
+    {
+      "id": "claim-peng-001",
+      "source_fact": "完成餐饮堂食评价表达H5的需求定义、配置化商家方案与可交互原型。",
+      "candidate_wording": "围绕消费者表达门槛，设计并落地配置化餐饮评价表达H5原型。",
+      "sources": [{"type": "repository", "location": "src/ 与 README.md", "public_status": "待GitHub发布"}],
+      "responsibility_level": "主导方案或交付",
+      "verification_status": "已确认",
+      "allowed_uses": ["AI产品经理简历", "作品集", "面试"],
+      "interview_details": ["可说明入口、商家确认、结构化输入、生成、编辑、复制和平台跳转的取舍"],
+      "boundary": "个人作品集原型；未证明商家正式采用或商业化结果。",
+      "risk_notes": ["真实商家公开展示授权待确认"],
+      "last_verified": "2026-09-08"
+    },
+    {
+      "id": "claim-peng-002",
+      "source_fact": "实现事实白名单、星级倾向校验、隐私检测、诱导评价检测与本地降级。",
+      "candidate_wording": "围绕生成可信度设计输入校验、事实约束、输出质检与失败降级链路。",
+      "sources": [{"type": "code_and_tests", "location": "src/lib/validation、src/lib/ai及11项测试", "public_status": "待GitHub发布"}],
+      "responsibility_level": "主导方案或交付",
+      "verification_status": "已确认",
+      "allowed_uses": ["AI产品经理简历", "作品集", "面试"],
+      "interview_details": ["可解释模型失败、事实虚构、星级冲突和隐私输入的处理边界"],
+      "boundary": "真实AI接口尚未配置；目前验证以本地生成和代码测试为主。",
+      "risk_notes": [],
+      "last_verified": "2026-09-08"
+    },
+    {
+      "id": "claim-peng-003",
+      "source_fact": "计划邀请5—8名用户测试完成率、用时、复制率和内容符合度。",
+      "candidate_wording": "【待补：完成小样本可用性测试后填写实际结果】",
+      "sources": [{"type": "measurement_plan", "location": "04_用户测试记录模板.md", "public_status": "可公开"}],
+      "responsibility_level": "项目负责人",
+      "verification_status": "待确认",
+      "allowed_uses": ["内部审计稿"],
+      "interview_details": ["说明指标口径、样本限制和迭代优先级方法"],
+      "boundary": "尚未执行测试，不能写为已有用户量或转化结果。",
+      "risk_notes": ["正式简历不得使用目标值替代实际值"],
+      "last_verified": null
+    },
+    {
+      "id": "claim-peng-004",
+      "source_fact": "计划发布GitHub公开仓库与Vercel演示。",
+      "candidate_wording": "【待补：取得公开URL并完成公网验收后使用】",
+      "sources": [{"type": "delivery_plan", "location": "01_项目步骤记录.md", "public_status": "未发布"}],
+      "responsibility_level": "项目负责人",
+      "verification_status": "待确认",
+      "allowed_uses": ["内部审计稿"],
+      "interview_details": ["可说明公开安全审计、环境变量与无数据库演示部署策略"],
+      "boundary": "当前只有本地地址，不能声称已上线。",
+      "risk_notes": ["商家授权或匿名化必须先处理"],
+      "last_verified": null
+    }
+  ]
+}

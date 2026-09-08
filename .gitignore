@@ -1,0 +1,19 @@
+node_modules
+.next
+out
+coverage
+.workbuddy
+.vscode
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+Thumbs.db
+
+# Local job-search materials are not part of this public project repository.
+AI产品经理面试*.md
+README-平台*.md
+商家与消费者调研问卷.docx
+简历项目-*.md
