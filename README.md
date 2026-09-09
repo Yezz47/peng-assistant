@@ -86,7 +86,7 @@ pnpm dev
 ## 接口
 
 - `GET /api/merchants/[merchantId]`：读取商家档案。
-- `POST /api/reviews/generate`：校验输入并生成评价草稿。
+- `POST /api/generate`：校验输入并生成评价草稿。
 - `POST /api/events`：可选匿名事件记录；未配置数据库时不影响主要流程。
 - `POST /api/research-consents`：可选研究授权记录；未配置数据库时不影响主要流程。
 
