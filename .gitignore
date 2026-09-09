@@ -12,7 +12,14 @@ coverage
 .DS_Store
 Thumbs.db
 
-# Local job-search materials are not part of this public project repository.
+# Local planning and job-search materials are not part of the public repository.
+03_作品集七天执行计划.md
+04_用户测试记录模板.md
+05_一分钟演示脚本.md
+06_项目案例一页纸.md
+07_AI产品经理求职表述.md
+导学-*.md
+面经-*.md
 AI产品经理面试*.md
 README-平台*.md
 商家与消费者调研问卷.docx

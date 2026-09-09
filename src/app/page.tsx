@@ -8,12 +8,12 @@ export default async function HomePage() {
   return (
     <main className="shell landing-shell">
       <section className="landing-hero">
-        <span className="eyebrow">AI产品经理作品集 · 可交互原型</span>
+        <span className="eyebrow">堂食评价表达 · H5</span>
         <h1>碰一碰评价表达助手</h1>
         <p>从商家专属入口记录真实体验，生成可编辑评价草稿，再由消费者自行复制到目标平台。</p>
         <div className="portfolio-notice">
-          <strong>演示模式</strong>
-          <span>当前默认使用本地忠实表达模板；配置兼容AI接口后可自动切换为真实模型生成，并保留本地降级能力。</span>
+          <strong>生成说明</strong>
+          <span>未配置AI服务时使用本地表达模板；配置后由AI整理表达，接口异常时自动降级。</span>
         </div>
       </section>
 
@@ -40,7 +40,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <p className="portfolio-disclaimer">个人作品集原型，非商家、美团或大众点评官方产品，不代表任何合作或背书。</p>
+      <p className="portfolio-disclaimer">本工具非商家、美团或大众点评官方产品，不代表任何合作或背书。</p>
     </main>
   );
 }

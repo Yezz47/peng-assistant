@@ -246,8 +246,8 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
             <p>确认后再记录真实体验，避免把反馈写到错误门店。</p>
           </div>
           <div className="portfolio-notice compact-notice">
-            <strong>作品集演示</strong>
-            <span>当前默认使用本地表达模板，所有草稿都需要由你确认和编辑。</span>
+            <strong>生成说明</strong>
+            <span>系统会根据你的真实体验整理草稿，内容仍需由你确认和编辑。</span>
           </div>
           <button className="button button-primary" onClick={confirmMerchant} type="button">
             这是我消费的门店
