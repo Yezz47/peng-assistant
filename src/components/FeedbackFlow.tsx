@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { BowlMascot } from "@/components/BowlMascot";
 import { DishSelector } from "@/components/DishSelector";
 import { ExperienceTags } from "@/components/ExperienceTags";
 import { MerchantHeader } from "@/components/MerchantHeader";
@@ -33,6 +34,9 @@ const STYLE_OPTIONS: Array<{ id: DraftStyle; label: string; help: string }> = [
   { id: "concise", label: "简洁", help: "只保留重点" },
   { id: "detailed", label: "详细", help: "包含更多细节" },
 ];
+
+/** 生成过程的三步进度（大纲第 6 节） */
+const GEN_STEPS = ["听懂感受", "整理表达", "检查事实"];
 
 function createSessionId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -72,6 +76,18 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
   const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [requestError, setRequestError] = useState("");
+  const [genStep, setGenStep] = useState(0);
+
+  // AI 生成中的三步进度：听懂感受 → 整理表达 → 检查事实
+  useEffect(() => {
+    if (!submitting) {
+      setGenStep(0);
+      return;
+    }
+    setGenStep(0);
+    const timer = window.setInterval(() => setGenStep((step) => Math.min(step + 1, GEN_STEPS.length - 1)), 850);
+    return () => window.clearInterval(timer);
+  }, [submitting]);
 
   useEffect(() => {
     const nextSessionId = createSessionId();
@@ -199,7 +215,7 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
     await requestGeneration(0);
   }
 
-  async function finalizeDraft(reviewTarget?: string) {
+  async function finalizeDraft() {
     if (!researchConsent || !draft.trim()) return;
     void fetch("/api/feedback/finalize", {
       method: "POST",
@@ -208,7 +224,6 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
         sessionId,
         finalDraft: draft.trim(),
         researchConsent: true,
-        reviewTarget,
       }),
       keepalive: true,
     });
@@ -230,6 +245,21 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
     trackEvent("merchant_confirmed");
   }
 
+  function finishFlow() {
+    setMerchantConfirmed(false);
+    setRating(0);
+    setTags({});
+    setDishIds([]);
+    setCustomDish("");
+    setText("");
+    setStyle("natural");
+    setAiProcessingConsent(false);
+    setResearchConsent(false);
+    setErrors({});
+    setRequestError("");
+    resetGeneratedResult();
+  }
+
   function appendTranscript(transcript: string) {
     setText((current) => `${current}${current.trim() ? "，" : ""}${transcript}`.slice(0, 200));
     setErrors((current) => ({ ...current, text: undefined, input: undefined }));
@@ -240,6 +270,20 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
     return (
       <main className="shell merchant-confirm-shell">
         <section className="surface confirm-card">
+          <div className="brand-intro">
+            <BowlMascot className="mascot mascot-small" pose="wave" still />
+            <div className="brand-intro-copy">
+              <strong>小碗帮你说</strong>
+              <span>说说真实感受，剩下的交给小碰碗</span>
+            </div>
+          </div>
+          <div className="welcome-panel">
+            <BowlMascot className="mascot welcome-mascot" pose="wave" />
+            <div>
+              <strong>嗨，我是小碰碗</strong>
+              <p>先确认门店，再把真实感受慢慢告诉我。</p>
+            </div>
+          </div>
           <MerchantHeader merchant={merchant} />
           <div className="confirmation-copy">
             <h2>请确认当前消费门店</h2>
@@ -250,7 +294,7 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
             <span>系统会根据你的真实体验整理草稿，内容仍需由你确认和编辑。</span>
           </div>
           <button className="button button-primary" onClick={confirmMerchant} type="button">
-            这是我消费的门店
+            这是我消费的门店，开始表达
           </button>
           <details className="wrong-merchant">
             <summary>门店信息不符</summary>
@@ -268,11 +312,26 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
         <MerchantHeader merchant={merchant} />
         <button className="text-button" onClick={() => setMerchantConfirmed(false)} type="button">重新确认门店</button>
 
-        {result ? (
+        {result && copied ? (
+          <section className="completion-panel" aria-live="polite">
+            <BowlMascot className="mascot completion-mascot" pose="copy" still />
+            <span className="eyebrow">复制完成</span>
+            <h2>评价已复制</h2>
+            <p>请自行打开常用的评价平台，在平台内确认门店后粘贴。</p>
+            <div className="decision-note">
+              <strong>发布由你决定</strong>
+              <span>小碰碗不会读取平台账号，也不会自动填写或提交评价。</span>
+            </div>
+            <div className="completion-actions">
+              <button className="button button-secondary" onClick={() => setCopied(false)} type="button">返回修改</button>
+              <button className="button button-primary" onClick={finishFlow} type="button">结束</button>
+            </div>
+          </section>
+        ) : result ? (
           <section className="result-panel" aria-live="polite">
             <div className="result-heading">
-              <span className="success-mark" aria-hidden="true">✓</span>
-              <span className="eyebrow">评价草稿已生成</span>
+              <BowlMascot className="mascot result-mascot" pose="deliver" withSlip still />
+              <span className="eyebrow">小碰碗草稿整理好了</span>
               <h2>请确认每句话都符合真实体验</h2>
               <p>你可以直接修改。产品只负责表达，不会自动提交到任何评价平台。</p>
             </div>
@@ -305,50 +364,36 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
 
             <div className="result-actions">
               <button className="button button-primary" disabled={!draft.trim()} onClick={copyDraft} type="button">
-                {copied ? "已复制评价" : "复制评价"}
+                复制评价
               </button>
               <button
                 className="button button-secondary"
-                disabled={submitting}
-                onClick={() => requestGeneration((variant + 1) % 6)}
+                disabled={submitting || variant >= 3}
+                onClick={() => requestGeneration(variant + 1)}
                 type="button"
               >
-                {submitting ? "正在重新生成…" : "换一种表达"}
+                {submitting ? "正在重新生成…" : variant >= 3 ? "已达重新生成上限" : "换一种表达"}
               </button>
               <button className="text-button result-back" onClick={() => setResult(null)} type="button">返回修改体验</button>
             </div>
-
-            <section className="review-target-panel">
-              <h3>{copied ? "已复制，选择评价平台" : "复制后再前往评价平台"}</h3>
-              <p>首轮不预先指定平台，由消费者自行选择；仍需在平台内确认门店并手动粘贴。</p>
-              {merchant.reviewTargets.length > 0 ? (
-                <div className="review-targets">
-                  {merchant.reviewTargets.map((target) => (
-                  <a
-                    aria-disabled={!copied}
-                    className="button review-target-link"
-                    href={copied ? target.url : undefined}
-                    key={target.id}
-                    onClick={(event) => {
-                      if (!copied) {
-                        event.preventDefault();
-                        return;
-                      }
-                      trackEvent("review_target_clicked", { eventResult: target.id });
-                      void finalizeDraft(target.id);
-                    }}
-                    rel="noreferrer"
-                    tabIndex={copied ? 0 : -1}
-                    target="_blank"
-                  >
-                    {target.label}
-                  </a>
-                  ))}
+          </section>
+        ) : submitting ? (
+          <section className="gen-progress" aria-live="polite">
+            <BowlMascot className="mascot mascot-hero" pose="working" />
+            <h2>小碰碗正在整理你的感受</h2>
+            <p>整理期间不会展示还没核对过的内容。</p>
+            <div className="gen-steps">
+              {GEN_STEPS.map((step, index) => (
+                <div
+                  className={`gen-step${index < genStep ? " done" : index === genStep ? " active" : ""}`}
+                  key={step}
+                >
+                  <span className="gen-dot" aria-hidden="true">{index < genStep ? "✓" : index + 1}</span>
+                  <span>{step}</span>
                 </div>
-              ) : (
-                <p className="review-target-empty">当前未配置平台商家页，请复制后手动返回美团或大众点评完成粘贴。</p>
-              )}
-            </section>
+              ))}
+            </div>
+            <p className="gen-boundary">一般几秒钟就好，你输入的内容仍保留在页面中。</p>
           </section>
         ) : (
           <form noValidate onSubmit={submitFeedback}>
@@ -443,10 +488,12 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
 
             {requestError && <p className="form-error" role="alert">{requestError}</p>}
 
-            <button className="button button-primary button-submit" disabled={submitting || !sessionId} type="submit">
-              {submitting ? "正在生成…" : "生成评价草稿"}
-            </button>
-            <p className="boundary-note">只生成可编辑草稿，不会自动填写或提交任何平台评价。</p>
+            <div className="submit-dock">
+              <button className="button button-primary button-submit" disabled={submitting || !sessionId} type="submit">
+                {submitting ? "正在生成…" : "生成评价草稿"}
+              </button>
+              <p className="boundary-note">只生成可编辑草稿，不会自动填写或提交任何平台评价。</p>
+            </div>
           </form>
         )}
       </section>

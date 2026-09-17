@@ -12,6 +12,14 @@ coverage
 .DS_Store
 Thumbs.db
 
+# Generated previews, temporary scripts and local build artifacts.
+artifacts/
+tmp/
+
+# Private design process, working notes and Figma source materials.
+gitignore/
+career-claim-ledger.json
+
 # Local planning and job-search materials are not part of the public repository.
 03_作品集七天执行计划.md
 04_用户测试记录模板.md
