@@ -345,21 +345,6 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
               rows={7}
               value={draft}
             />
-            <div className="field-footer">
-              <span className="generation-method">
-                {result.provider === "local-demo" ? "本地演示生成" : `AI生成 · ${result.model}`}
-              </span>
-              <span className="character-count">{draft.length}/300</span>
-            </div>
-
-            {result.warnings.length > 0 && (
-              <div className="warning-box">
-                {result.warnings.map((warning) => <p key={warning.code}>{warning.message}</p>)}
-              </div>
-            )}
-            {result.retentionState === "unavailable" && researchConsent && (
-              <p className="retention-note">草稿已正常生成；当前未连接云端，研究样本未保存。</p>
-            )}
             {requestError && <p className="form-error" role="alert">{requestError}</p>}
 
             <div className="result-actions">
