@@ -130,11 +130,14 @@ export function validateFeedbackInput(
   }
 
   const meaningfulText = isMeaningfulText(input.text);
+  const detailLength = Array.from(input.text).filter((character) => /[\p{L}\p{N}]/u.test(character)).length;
   if (input.tags.length === 0 && !meaningfulText) {
     issues.push({ field: "input", code: "EXPERIENCE_REQUIRED", message: "请至少选择一个体验标签，或补充一句真实感受。" });
   }
   if (input.text.length > 0 && !meaningfulText) {
     issues.push({ field: "text", code: "TEXT_NOT_MEANINGFUL", message: "文字内容不能只有空格、标点或表情。" });
+  } else if (detailLength < 5) {
+    issues.push({ field: "text", code: "DETAIL_REQUIRED", message: "请用至少5个字写一句具体感受，避免草稿为了凑字数编造细节。" });
   }
 
   const seenAspects = new Set<ExperienceAspectId>();

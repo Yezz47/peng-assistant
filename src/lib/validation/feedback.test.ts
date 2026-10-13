@@ -10,7 +10,7 @@ const baseInput = {
   tags: [{ aspect: "taste" as const, optionId: "taste_like" }],
   dishIds: ["cqxm_pea_noodles"],
   customDish: "",
-  text: "豌杂拌面很香",
+  text: "豌杂拌面很香，不过上菜有点慢",
   aiProcessingConsent: true,
   researchConsent: false,
   entryType: "direct" as const,
@@ -31,6 +31,19 @@ describe("validateFeedbackInput", () => {
     );
     expect(result.valid).toBe(false);
     expect(result.issues.some((issue) => issue.code === "EXPERIENCE_REQUIRED")).toBe(true);
+  });
+
+  it("asks for a concrete detail when tags alone cannot support a 30–50 character review", () => {
+    const result = validateFeedbackInput({ ...baseInput, text: "" }, merchant);
+    expect(result.valid).toBe(false);
+    expect(result.issues.some((issue) => issue.code === "DETAIL_REQUIRED")).toBe(true);
+  });
+
+  it("accepts five effective characters and rejects four", () => {
+    const short = validateFeedbackInput({ ...baseInput, text: "味道不错" }, merchant);
+    const enough = validateFeedbackInput({ ...baseInput, text: "味道还不错" }, merchant);
+    expect(short.issues.some((issue) => issue.code === "DETAIL_REQUIRED")).toBe(true);
+    expect(enough.valid).toBe(true);
   });
 
   it("rejects a dish that is not configured for the merchant", () => {

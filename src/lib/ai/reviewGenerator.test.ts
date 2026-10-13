@@ -43,4 +43,27 @@ describe("generateReviewDraft local fallback", () => {
     expect(result.draft).not.toContain("13800138000");
     expect(result.draft).toContain("[已脱敏]");
   });
+
+  it("uses the customer's concrete detail without repeating the same dish or taste tag", async () => {
+    const result = await generateReviewDraft({ merchant, input: baseInput, facts, forceLocal: true });
+    expect(result.draft).toContain("重庆豌杂拌面很香");
+    expect(result.draft.match(/重庆豌杂拌面/g)).toHaveLength(1);
+    expect(result.draft).not.toContain("口味挺合我意");
+    expect(result.draft).not.toContain("整体体验");
+  });
+
+  it("keeps a negative tag negative and changes the wording when regenerated", async () => {
+    const input: FeedbackInput = {
+      ...baseInput,
+      rating: 2,
+      tags: [{ aspect: "serving_speed", optionId: "speed_slow" }],
+      dishIds: [],
+      text: "",
+    };
+    const first = await generateReviewDraft({ merchant, input, facts, forceLocal: true });
+    const second = await generateReviewDraft({ merchant, input: { ...input, variant: 1 }, facts, forceLocal: true });
+    expect(first.draft).toContain("上菜有点慢");
+    expect(second.draft).toContain("上菜有点慢");
+    expect(first.draft).not.toBe(second.draft);
+  });
 });

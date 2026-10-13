@@ -425,8 +425,8 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
             />
 
             <div className="field-group">
-              <label htmlFor="experience-text">补充一句真实感受 <span className="optional">选填</span></label>
-              <p className="field-help">可以输入文字；支持的浏览器也可以直接说一句。</p>
+              <label htmlFor="experience-text">补充一句真实感受</label>
+              <p className="field-help">请写至少5个字的具体体验，帮助生成30—50字的真实草稿；也可以直接说一句。</p>
               <textarea
                 aria-describedby={errors.text ? "text-error" : "text-count"}
                 id="experience-text"
