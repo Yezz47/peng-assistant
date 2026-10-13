@@ -15,8 +15,8 @@ export function DishSelector({ dishes, selected, onChange, customDish, onCustomD
 
   return (
     <fieldset className="field-group">
-      <legend>本次吃过的菜品 <span className="optional">选填，最多3项</span></legend>
-      <p className="field-help">选择菜品只表示你吃过，不代表喜欢或推荐。</p>
+      <legend>本次吃过的菜品 <span className="optional">选填，可多选</span></legend>
+      <p className="field-help">选择菜品只表示你吃过，不代表喜欢或推荐；草稿会根据你的感受择要提及。</p>
       <div className="chip-list">
         {activeDishes.map((dish) => (
           <button

@@ -145,13 +145,9 @@ export function FeedbackFlow({ merchant, entryType }: FeedbackFlowProps) {
   function updateDish(dishId: string) {
     setDishIds((current) => {
       if (current.includes(dishId)) return current.filter((id) => id !== dishId);
-      if (current.length >= 3) {
-        setErrors((existing) => ({ ...existing, dishIds: "最多选择3道本次吃过的菜品。" }));
-        return current;
-      }
-      setErrors((existing) => ({ ...existing, dishIds: undefined }));
       return [...current, dishId];
     });
+    setErrors((existing) => ({ ...existing, dishIds: undefined }));
     resetGeneratedResult();
   }
 

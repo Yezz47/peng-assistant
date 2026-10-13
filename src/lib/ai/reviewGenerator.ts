@@ -81,7 +81,8 @@ function buildLocalDraft(
     .map((selection) => TAG_PHRASES[selection.optionId])
     .filter((phrase): phrase is string => Boolean(phrase))
     .slice(0, maxTagCount);
-  const unmentionedDishes = dishNames.filter((name) => !userText.includes(name));
+  const maxMentionedDishes = input.style === "concise" ? 1 : input.style === "natural" ? 2 : 3;
+  const unmentionedDishes = dishNames.filter((name) => !userText.includes(name)).slice(0, maxMentionedDishes);
   const openings = ["这次在", "在", "去了", "这次去", "到", "这回在"];
   const visit = `${openings[input.variant % openings.length]}${merchantLabel}${unmentionedDishes.length ? `点了${unmentionedDishes.join("、")}` : ""}`;
   const detail = [userText, ...tagPhrases].filter(Boolean);
@@ -158,7 +159,7 @@ async function generateRemoteDraft(
 
 1. draft 必须有 30—50 个有效字，优先写到 35—45 字。有效字指汉字、英文字母和数字；标点、空格、换行、表情不计入。只计算 draft 正文，不计算 JSON 字段名和 usedFactLabels。输出前自己数一遍并调整。
 2. 写成一段 1—2 句的自然短评，不换行、不列点、不写标题。简洁、自然、详细风格只改变详略和句式，都遵守上述字数。
-3. 优先保留用户原文里具体、有辨识度的说法。标签只补原文没提到的维度；同一事实只表达一次。若原文已提到某菜，不要重复说“点了某菜”。
+3. 优先保留用户原文里具体、有辨识度的说法。标签只补原文没提到的维度；同一事实只表达一次。所选菜品是可用事实，不要求逐一列出；多选时只提原文重点说到的菜，必要时再补1—2道。若原文已提到某菜，不要重复说“点了某菜”。
 4. 商家名称自然出现一次即可；不必带分店、地址和品类。改写序号不进入正文；重新生成时可以换句式或叙述顺序，不改变事实。
 
 【语气与内容】

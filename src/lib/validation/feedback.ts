@@ -25,7 +25,7 @@ export const feedbackInputSchema = z.object({
   merchantId: merchantIdSchema,
   rating: z.number().int().min(1).max(5),
   tags: z.array(experienceTagSchema).max(4),
-  dishIds: z.array(z.string().min(1)).max(3),
+  dishIds: z.array(z.string().min(1)),
   customDish: z.string().max(40).default(""),
   text: z.string().max(200),
   aiProcessingConsent: z.boolean(),

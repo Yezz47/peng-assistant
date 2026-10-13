@@ -74,6 +74,21 @@ describe("validateFeedbackInput", () => {
     }
   });
 
+  it("accepts all eight dishes in one submission", () => {
+    const jiangnan = MERCHANT_SEEDS.find((candidate) => candidate.id === "jnxz_huhehaote_001")!;
+    const result = validateFeedbackInput(
+      {
+        ...baseInput,
+        merchantId: jiangnan.id,
+        dishIds: jiangnan.dishes.map((dish) => dish.id),
+        text: "红烧肉吃着很香，其他菜也尝了",
+      },
+      jiangnan,
+    );
+    expect(result.valid).toBe(true);
+    expect(result.facts.filter((fact) => fact.aspect === "dish")).toHaveLength(8);
+  });
+
   it("blocks a clear rating and sentiment conflict", () => {
     const result = validateFeedbackInput(
       {
