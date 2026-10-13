@@ -1,4 +1,12 @@
-import type { Merchant } from "@/types/domain";
+import type { Dish, Merchant } from "@/types/domain";
+
+const JNXZ_ADDITIONAL_DISHES: Dish[] = [
+  { id: "jnxz_supreme_lion_head", merchantId: "jnxz_huhehaote_001", name: "至尊狮子头", isSignature: false, status: "active", sortOrder: 4 },
+  { id: "jnxz_kung_fu_fish", merchantId: "jnxz_huhehaote_001", name: "功夫鱼", isSignature: false, status: "active", sortOrder: 5 },
+  { id: "jnxz_three_dice_bun", merchantId: "jnxz_huhehaote_001", name: "三丁包", isSignature: false, status: "active", sortOrder: 6 },
+  { id: "jnxz_luyangchun", merchantId: "jnxz_huhehaote_001", name: "绿杨春", isSignature: false, status: "active", sortOrder: 7 },
+  { id: "jnxz_crab_roe_soup_dumpling", merchantId: "jnxz_huhehaote_001", name: "蟹粉汤包", isSignature: false, status: "active", sortOrder: 8 },
+];
 
 export const MERCHANT_SEEDS: Merchant[] = [
   {
@@ -80,6 +88,7 @@ export const MERCHANT_SEEDS: Merchant[] = [
         status: "active",
         sortOrder: 3,
       },
+      ...JNXZ_ADDITIONAL_DISHES,
     ],
   },
   {

@@ -55,6 +55,25 @@ describe("validateFeedbackInput", () => {
     expect(result.issues.some((issue) => issue.code === "INVALID_DISH")).toBe(true);
   });
 
+  it("accepts each newly added Jiangnan Xizun dish as a selected fact", () => {
+    const jiangnan = MERCHANT_SEEDS.find((candidate) => candidate.id === "jnxz_huhehaote_001")!;
+    const addedDishes = [
+      ["jnxz_supreme_lion_head", "至尊狮子头"],
+      ["jnxz_kung_fu_fish", "功夫鱼"],
+      ["jnxz_three_dice_bun", "三丁包"],
+      ["jnxz_luyangchun", "绿杨春"],
+      ["jnxz_crab_roe_soup_dumpling", "蟹粉汤包"],
+    ];
+    for (const [dishId, name] of addedDishes) {
+      const result = validateFeedbackInput(
+        { ...baseInput, merchantId: jiangnan.id, dishIds: [dishId] },
+        jiangnan,
+      );
+      expect(result.valid).toBe(true);
+      expect(result.facts.some((fact) => fact.label === `本次吃过：${name}`)).toBe(true);
+    }
+  });
+
   it("blocks a clear rating and sentiment conflict", () => {
     const result = validateFeedbackInput(
       {

@@ -68,6 +68,20 @@ function mapDish(row: DishRow): Dish {
   };
 }
 
+function resolveDishes(row: MerchantRow): Dish[] {
+  const cloudDishes = (row.dishes ?? []).map(mapDish);
+  if (row.merchant_id !== "jnxz_huhehaote_001") {
+    return cloudDishes.sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+  const configuredDishes = MERCHANT_SEEDS.find((merchant) => merchant.id === row.merchant_id)?.dishes ?? [];
+  const configuredIds = new Set(configuredDishes.map((dish) => dish.id));
+  const configuredNames = new Set(configuredDishes.map((dish) => dish.name));
+  return [
+    ...configuredDishes,
+    ...cloudDishes.filter((dish) => !configuredIds.has(dish.id) && !configuredNames.has(dish.name)),
+  ].sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
 function mapMerchant(row: MerchantRow): Merchant {
   return {
     id: row.merchant_id,
@@ -81,7 +95,7 @@ function mapMerchant(row: MerchantRow): Merchant {
     source: row.source,
     updatedAt: row.updated_at,
     reviewTargets: safeReviewTargets(row.review_targets),
-    dishes: (row.dishes ?? []).map(mapDish).sort((a, b) => a.sortOrder - b.sortOrder),
+    dishes: resolveDishes(row),
   };
 }
 
